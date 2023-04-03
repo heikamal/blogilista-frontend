@@ -1,59 +1,50 @@
 import Blog from './Blog'
 import Notification from './Notification'
+import BlogForm from './BlogForm'
+import { useState, useEffect } from 'react'
+import blogService from '../services/blogs'
 
-const BlogForm = (props) => {
-	return (
-		<form onSubmit={props.addNewBlog}>
-			<div>
-				title
-				<input
-					type="text"
-					value={props.newTitle}
-					name="Title"
-					onChange={({ target }) => props.setNewTitle(target.value)}
-				/>
-			</div>
-			<div>
-				author
-				<input
-					type="text"
-					value={props.newAuthor}
-					name="Author"
-					onChange={({ target }) => props.setNewAuthor(target.value)}
-				/>
-			</div>
-			<div>
-				url
-				<input
-					type="text"
-					value={props.newUrl}
-					name="Url"
-					onChange={({ target }) => props.setNewUrl(target.value)}
-				/>
-			</div>
-			<button type='submit'>create</button>
-		</form>
-	)
-}
+const BlogDisplay = ({
+	user,
+	handleLogout,
+	message,
+	setNotiMessage }) => {
+	// haetut blogit
+	const [blogs, setBlogs] = useState([])
+	const [formVisible, setFormVisible] = useState(false)
 
-const BlogDisplay = (props) => {
+	const hideWhenVisible = { display: formVisible ? 'none' : '' }
+	const showWhenVisible = { display: formVisible ? '' : 'none' }
+
+	// blogien hakeminen
+	useEffect(() => {
+		blogService.getAll().then(blogs =>
+			setBlogs( blogs )
+		)
+	}, [])
+
 	return (
 		<div>
 			<h2>blogs</h2>
-			<Notification message={props.message}/>
-			<BlogForm
-				addNewBlog={props.addNewBlog}
-				newTitle={props.newTitle}
-				setNewTitle={props.setNewTitle}
-				newAuthor={props.newAuthor}
-				setNewAuthor={props.setNewAuthor}
-				newUrl={props.newUrl}
-				setNewUrl={props.setNewUrl} />
+			<Notification message={message}/>
 			<p>
-				{props.user.name} logged in
-				<button onClick={props.handleLogout}>logout</button>
+				{user.name} logged in
+				<button onClick={handleLogout}>logout</button>
 			</p>
-			{props.blogs.map(blog =>
+			<div style={hideWhenVisible}>
+				<button onClick={() => setFormVisible(true)}>add new</button>
+			</div>
+			<div style={showWhenVisible}>
+				<h2>create new</h2>
+				<BlogForm
+					setNotiMessage={setNotiMessage}
+					setBlogs={setBlogs}
+					blogs={blogs}
+					setFormVisible={setFormVisible}
+				/>
+				<button onClick={() => {setFormVisible(false)}}>cancel</button>
+			</div>
+			{blogs.map(blog =>
 				<Blog key={blog.id} blog={blog} />
 			)}
 		</div>
