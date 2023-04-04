@@ -21,6 +21,21 @@ const Blog = ({ blog, setNotiMessage, blogs, setBlogs }) => {
 			})
 	}
 
+	const removeBlog = async (event) => {
+		event.preventDefault()
+		if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+			blogService
+				.remove(blog.id)
+				.then(() => {
+					setBlogs(blogs.filter(item => item.id !== blog.id))
+					setNotiMessage(`${blog.title} removed`)
+					setTimeout(() => {
+						setNotiMessage(null)
+					}, 5000)
+				})
+		}
+	}
+
 	return (
 		<div className="blog">
 			{blog.title} {blog.author} <TogglableButton state={blogInfoVisible}
@@ -32,7 +47,8 @@ const Blog = ({ blog, setNotiMessage, blogs, setBlogs }) => {
 				<p>
 					{blog.url}<br/>
 					likes: {blog.likes} <button onClick={updateLikes}>like</button><br/>
-					{blog.user.name}
+					{blog.user.name}<br/>
+					<button onClick={removeBlog}>remove</button>
 				</p>
 			</div>
 
