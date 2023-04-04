@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import TogglableButton from './TogglableButton'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, setNotiMessage, blogs, setBlogs }) => {
-
 	const [blogInfoVisible, setBlogInfoVisible] = useState(false)
 	const showWhenVisible = { display: blogInfoVisible ? '' : 'none' }
 
@@ -54,6 +54,13 @@ const Blog = ({ blog, setNotiMessage, blogs, setBlogs }) => {
 
 		</div>
 	)
+}
+
+Blog.propTypes = {
+	blog: PropTypes.object.isRequired,
+	setNotiMessage: PropTypes.func.isRequired,
+	blogs: PropTypes.array.isRequired,
+	setBlogs: PropTypes.func.isRequired,
 }
 
 export default Blog

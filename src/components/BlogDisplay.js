@@ -3,15 +3,15 @@ import Notification from './Notification'
 import BlogForm from './BlogForm'
 import { useState, useEffect } from 'react'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
 const BlogDisplay = ({
 	user,
-	handleLogout,
-	message,
-	setNotiMessage }) => {
+	handleLogout }) => {
 	// haetut blogit
 	const [blogs, setBlogs] = useState([])
 	const [formVisible, setFormVisible] = useState(false)
+	const [notiMessage, setNotiMessage] = useState(null)
 
 	const hideWhenVisible = { display: formVisible ? 'none' : '' }
 	const showWhenVisible = { display: formVisible ? '' : 'none' }
@@ -38,7 +38,7 @@ const BlogDisplay = ({
 	return (
 		<div>
 			<h2>blogs</h2>
-			<Notification message={message}/>
+			<Notification message={notiMessage}/>
 			<p>
 				{user.name} logged in
 				<button onClick={handleLogout}>logout</button>
@@ -60,6 +60,11 @@ const BlogDisplay = ({
 			{sortBlogs}
 		</div>
 	)
+}
+
+BlogDisplay.propTypes = {
+	user: PropTypes.object.isRequired,
+	handleLogout: PropTypes.func.isRequired,
 }
 
 export default BlogDisplay

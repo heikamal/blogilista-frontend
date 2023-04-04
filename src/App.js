@@ -8,10 +8,6 @@ const App = () => {
 	//kirjautuminen
 	const [user, setUser] = useState(null)
 
-	// ilmoitus
-	const [errorMessage, setErrorMessage] = useState(null)
-	const [notiMessage, setNotiMessage] = useState(null)
-
 	// haetaan kirjautunut käyttäjä jos sellaista on
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
@@ -35,8 +31,6 @@ const App = () => {
 		<div>
 			{!user && <div>
 				<LoginForm
-					setErrorMessage={setErrorMessage}
-					message={errorMessage}
 					setUser={setUser}
 				/>
 			</div>}
@@ -44,8 +38,6 @@ const App = () => {
 				<BlogDisplay
 					user={user}
 					handleLogout={handleLogout}
-					message={notiMessage}
-					setNotiMessage={setNotiMessage}
 				/>
 			</div>}
 		</div>

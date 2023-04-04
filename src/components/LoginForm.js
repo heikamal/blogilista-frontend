@@ -2,10 +2,13 @@ import Error from './Error'
 import { useState } from 'react'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
-const LoginForm = ({ setErrorMessage, message, setUser }) => {
+const LoginForm = ({ setUser }) => {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
+	// ilmoitus
+	const [errorMessage, setErrorMessage] = useState(null)
 
 	// loginin handleri
 	const handleLogin = async (event) => {
@@ -39,7 +42,7 @@ const LoginForm = ({ setErrorMessage, message, setUser }) => {
 	return (
 		<div>
 			<h2>log in to application</h2>
-			<Error message={message}/>
+			<Error message={errorMessage}/>
 			<form onSubmit={handleLogin}>
 				<div>
             username
@@ -63,6 +66,10 @@ const LoginForm = ({ setErrorMessage, message, setUser }) => {
 			</form>
 		</div>
 	)
+}
+
+LoginForm.propTypes = {
+	setUser: PropTypes.func.isRequired,
 }
 
 export default LoginForm
