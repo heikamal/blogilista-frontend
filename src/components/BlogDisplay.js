@@ -41,6 +41,7 @@ const BlogDisplay = ({
 					setBlogs={setBlogs}
 					blogs={blogs}
 					setFormVisible={setFormVisible}
+					user={user}
 				/>
 				<button onClick={() => {setFormVisible(false)}}>cancel</button>
 			</div>
