@@ -22,6 +22,9 @@ const BlogForm = ({ blogs, setBlogs, setNotiMessage, setFormVisible, user }) => 
 				let returnedBlog = { ...returned, user: user }
 				setBlogs(blogs.concat(returnedBlog))
 				setNotiMessage(`a new blog ${newTitle} by ${newAuthor} added`)
+				setTimeout(() => {
+					setNotiMessage(null)
+				}, 5000)
 			})
 		setNewTitle('')
 		setNewAuthor('')

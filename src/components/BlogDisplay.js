@@ -46,7 +46,12 @@ const BlogDisplay = ({
 				<button onClick={() => {setFormVisible(false)}}>cancel</button>
 			</div>
 			{blogs.map(blog =>
-				<Blog key={blog.id} blog={blog} />
+				<Blog key={blog.id}
+					blog={blog}
+					setNotiMessage={setNotiMessage}
+					blogs={blogs}
+					setBlogs={setBlogs}
+				/>
 			)}
 		</div>
 	)

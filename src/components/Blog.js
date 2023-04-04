@@ -1,10 +1,25 @@
 import { useState } from 'react'
 import TogglableButton from './TogglableButton'
+import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, setNotiMessage, blogs, setBlogs }) => {
 
 	const [blogInfoVisible, setBlogInfoVisible] = useState(false)
 	const showWhenVisible = { display: blogInfoVisible ? '' : 'none' }
+
+	const updateLikes = async (event) => {
+		event.preventDefault()
+		const updatedBlog = { ...blog, likes: blog.likes + 1 }
+		blogService
+			.update(blog.id, updatedBlog)
+			.then(returned => {
+				setBlogs(blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog)))
+				setNotiMessage(`like added to ${returned.title}`)
+				setTimeout(() => {
+					setNotiMessage(null)
+				}, 5000)
+			})
+	}
 
 	return (
 		<div className="blog">
@@ -16,7 +31,7 @@ const Blog = ({ blog }) => {
 			<div style={showWhenVisible}>
 				<p>
 					{blog.url}<br/>
-					likes: {blog.likes} <button>like</button><br/>
+					likes: {blog.likes} <button onClick={updateLikes}>like</button><br/>
 					{blog.user.name}
 				</p>
 			</div>
