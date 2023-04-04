@@ -23,6 +23,18 @@ const BlogDisplay = ({
 		)
 	}, [])
 
+	const sortBlogs = []
+		.concat(blogs)
+		.sort((a, b) => a.likes < b.likes ? 1 : -1)
+		.map((blog) =>
+			<Blog key={blog.id}
+				blog={blog}
+				setNotiMessage={setNotiMessage}
+				blogs={blogs}
+				setBlogs={setBlogs}
+			/>
+		)
+
 	return (
 		<div>
 			<h2>blogs</h2>
@@ -45,14 +57,7 @@ const BlogDisplay = ({
 				/>
 				<button onClick={() => {setFormVisible(false)}}>cancel</button>
 			</div>
-			{blogs.map(blog =>
-				<Blog key={blog.id}
-					blog={blog}
-					setNotiMessage={setNotiMessage}
-					blogs={blogs}
-					setBlogs={setBlogs}
-				/>
-			)}
+			{sortBlogs}
 		</div>
 	)
 }
