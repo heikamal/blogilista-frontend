@@ -1,42 +1,31 @@
-import { useState } from 'react'
-import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
+import { useState } from 'react'
 
-const BlogForm = ({ blogs, setBlogs, setNotiMessage, setFormVisible, user }) => {
+const BlogForm = ({ addNewBlog }) => {
 	// uuden blogin tiedot
 	const [newTitle, setNewTitle] = useState('')
 	const [newAuthor, setNewAuthor] = useState('')
 	const [newUrl, setNewUrl] = useState('')
 
-	const addNewBlog = (event) => {
+	const createBlog = (event) => {
 		event.preventDefault()
 		const newBlog = {
 			title: newTitle,
 			author: newAuthor,
-			url: newUrl
+			url: newUrl,
 		}
-
-		blogService
-			.create(newBlog)
-			.then(returned => {
-				let returnedBlog = { ...returned, user: user }
-				setBlogs(blogs.concat(returnedBlog))
-				setNotiMessage(`a new blog ${newTitle} by ${newAuthor} added`)
-				setTimeout(() => {
-					setNotiMessage(null)
-				}, 5000)
-			})
+		addNewBlog(newBlog)
 		setNewTitle('')
 		setNewAuthor('')
 		setNewUrl('')
-		setFormVisible(false)
 	}
 
 	return (
-		<form onSubmit={addNewBlog}>
+		<form onSubmit={createBlog}>
 			<div>
 				title
 				<input
+					className='title-field'
 					type="text"
 					value={newTitle}
 					name="Title"
@@ -46,6 +35,7 @@ const BlogForm = ({ blogs, setBlogs, setNotiMessage, setFormVisible, user }) => 
 			<div>
 				author
 				<input
+					className='author-field'
 					type="text"
 					value={newAuthor}
 					name="Author"
@@ -55,6 +45,7 @@ const BlogForm = ({ blogs, setBlogs, setNotiMessage, setFormVisible, user }) => 
 			<div>
 				url
 				<input
+					className='url-field'
 					type="text"
 					value={newUrl}
 					name="Url"
@@ -67,11 +58,7 @@ const BlogForm = ({ blogs, setBlogs, setNotiMessage, setFormVisible, user }) => 
 }
 
 BlogForm.propTypes = {
-	blogs: PropTypes.array.isRequired,
-	setBlogs: PropTypes.func.isRequired,
-	setNotiMessage: PropTypes.func.isRequired,
-	setFormVisible: PropTypes.func.isRequired,
-	user: PropTypes.object.isRequired,
+	addNewBlog: PropTypes.func.isRequired,
 }
 
 export default BlogForm

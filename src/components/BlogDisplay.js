@@ -16,6 +16,21 @@ const BlogDisplay = ({
 	const hideWhenVisible = { display: formVisible ? 'none' : '' }
 	const showWhenVisible = { display: formVisible ? '' : 'none' }
 
+	const addNewBlog = (newBlog) => {
+
+		blogService
+			.create(newBlog)
+			.then(returned => {
+				let returnedBlog = { ...returned, user: user }
+				setBlogs(blogs.concat(returnedBlog))
+				setNotiMessage(`a new blog ${newBlog.title} by ${newBlog.author} added`)
+				setTimeout(() => {
+					setNotiMessage(null)
+				}, 5000)
+			})
+		setFormVisible(false)
+	}
+
 	// blogien hakeminen
 	useEffect(() => {
 		blogService.getAll().then(blogs =>
@@ -75,11 +90,7 @@ const BlogDisplay = ({
 			<div style={showWhenVisible}>
 				<h2>create new</h2>
 				<BlogForm
-					setNotiMessage={setNotiMessage}
-					setBlogs={setBlogs}
-					blogs={blogs}
-					setFormVisible={setFormVisible}
-					user={user}
+					addNewBlog={addNewBlog}
 				/>
 				<button onClick={() => {setFormVisible(false)}}>cancel</button>
 			</div>
