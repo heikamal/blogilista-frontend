@@ -13,7 +13,7 @@ const Blog = ({ blog, updateLikes, removeBlog }) => {
 				handler2={() => setBlogInfoVisible(true)}
 				text1='hide'
 				text2='view' />
-			<div style={showWhenVisible}>
+			<div className='toggle-view' style={showWhenVisible}>
 				<p>
 					{blog.url}<br/>
 					likes: {blog.likes} <button onClick={updateLikes}>like</button><br/>
