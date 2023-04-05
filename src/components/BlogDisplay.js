@@ -29,11 +29,37 @@ const BlogDisplay = ({
 		.map((blog) =>
 			<Blog key={blog.id}
 				blog={blog}
-				setNotiMessage={setNotiMessage}
-				blogs={blogs}
-				setBlogs={setBlogs}
+				updateLikes={() => updateLikes(blog)}
+				removeBlog={() => removeBlog(blog)}
 			/>
 		)
+
+	const updateLikes = async (blog) => {
+		const updatedBlog = { ...blog, likes: blog.likes + 1 }
+		blogService
+			.update(blog.id, updatedBlog)
+			.then(returned => {
+				setBlogs(blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog)))
+				setNotiMessage(`like added to ${returned.title}`)
+				setTimeout(() => {
+					setNotiMessage(null)
+				}, 5000)
+			})
+	}
+
+	const removeBlog = async (blog) => {
+		if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+			blogService
+				.remove(blog.id)
+				.then(() => {
+					setBlogs(blogs.filter(item => item.id !== blog.id))
+					setNotiMessage(`${blog.title} removed`)
+					setTimeout(() => {
+						setNotiMessage(null)
+					}, 5000)
+				})
+		}
+	}
 
 	return (
 		<div>
