@@ -111,5 +111,41 @@ describe('Blog app', function() {
 				cy.get('#remove-button').should('not.exist')
 			})
 		})
+
+		describe('When there is multiple blogs', function() {
+			beforeEach(function() {
+				cy.createBlog({
+					title: 'The title with the second most likes',
+					author: 'Matti Luukkainen',
+					url: 'https://fullstackopen.com/osa5/end_to_end_testaus'
+				})
+
+				cy.createBlog({
+					title: 'The title with the most likes',
+					author: 'Matti Luukkainen',
+					url: 'https://fullstackopen.com/osa5/end_to_end_testaus'
+				})
+			})
+
+			it('Blogs are in order of the most likes', function() {
+
+				// koska blogit ollaan lisätty käänteisessä järjestyksessä, haetaan viimeinen painike jolla blogin tiedot laajennetaan
+				cy.get('#togglable-button:last').click()
+
+				// annetaan sille muutama tykkäys, annetaan jokaiselle tykkäykselle aikaa näkyä cypressin wait-komennolla
+				for (let i = 0; i < 3; i++) {
+					cy.get('#like-button').click()
+					cy.wait(500)
+				}
+
+				// koska nyt kaiken järjen mukaan aiemmin hakemamme painike on siirtynyt, voidaan vain hakea piilotuspainiketta ja painaa siitä
+				cy.contains('hide').click()
+
+				// tarkista että blogit ovat oikeassa järjestyksessä
+				cy.get('.blog').eq(0).should('contain', 'The title with the most likes')
+				cy.get('.blog').eq(1).should('contain', 'The title with the second most likes')
+			})
+
+		})
 	})
 })

@@ -16,7 +16,7 @@ const Blog = ({ user, blog, updateLikes, removeBlog }) => {
 			<div className='toggle-view' style={showWhenVisible}>
 				<p>
 					{blog.url}<br/>
-					likes: {blog.likes} <button onClick={updateLikes}>like</button><br/>
+					likes: {blog.likes} <button id='like-button' onClick={updateLikes}>like</button><br/>
 					{blog.user.name}<br/>
 					{user.username === blog.user.username && <button id='remove-button' onClick={removeBlog}>remove</button>}
 				</p>
