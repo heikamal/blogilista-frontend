@@ -26,10 +26,10 @@ test('renders blog title and author', () => {
 	const div = container.querySelector('.blog')
 
 	// tarkasta että title ja author-kentät tulostuvat oikein
-		expect(div).toHaveTextContent(
+	expect(div).toHaveTextContent(
 		'Esimerkkiblogi'
 	)
-		expect(div).toHaveTextContent(
+	expect(div).toHaveTextContent(
 		'Mutka Järvinen'
 	)
 

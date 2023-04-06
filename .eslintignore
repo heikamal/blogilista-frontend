@@ -1,7 +1,4 @@
 node_modules
 build
 .eslintrc.js
-./components/Blog.test.js
-./components/BlogForm.test.js
-cypress
 cypress.config.js
