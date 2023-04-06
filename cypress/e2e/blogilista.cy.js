@@ -9,6 +9,7 @@ describe('Blog app', function() {
 			username: 'heimal',
 			password: 'salasana1'
 		}
+
 		cy.request('POST', 'http://localhost:3003/api/users/', user)
 
 		// avaa sivu
@@ -47,9 +48,7 @@ describe('Blog app', function() {
 	describe('When logged in', function() {
 		beforeEach(function() {
 			// log in user here
-			cy.get('#username').type('heimal')
-			cy.get('#password').type('salasana1')
-			cy.get('#login-button').click()
+			cy.login({ username: 'heimal', password: 'salasana1' })
 		})
 
 		it('A blog can be created', function() {
@@ -60,6 +59,22 @@ describe('Blog app', function() {
 			cy.get('#createBlog-button').click()
 			cy.contains('a new blog TestiBlogi by Matti Meikäläinen added')
 			cy.contains('TestiBlogi Matti Meikäläinen')
+		})
+
+		describe('When there is a blog already', function() {
+			beforeEach(function() {
+				cy.createBlog({
+					title: 'JavaScript testing: 9 best practices to learn',
+					author: 'Michiel Mulders',
+					url: 'https://blog.logrocket.com/javascript-testing-best-practices/'
+				})
+			})
+
+			it('An existing blog can be liked', function() {
+				cy.contains('view').click()
+				cy.contains('like').click()
+				cy.contains('like added to JavaScript testing: 9 best practices to learn')
+			})
 		})
 	})
 })
