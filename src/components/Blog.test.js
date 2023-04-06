@@ -17,11 +17,17 @@ const testBlog = {
 	}
 }
 
+const testUser = {
+	id: '641c4f9c5ed768a7bdce3cd5',
+	name: 'Heikki Malkavaara',
+	username: 'heimal',
+}
+
 test('renders blog title and author', () => {
 
 	// renderöi Blog-komponentti ja etsi se testattavaksi
-	const { container } = render (
-		<Blog blog={testBlog} updateLikes={() => {}} removeBlog={() => {}} />
+	const { container } = render(
+		<Blog user={testUser} blog={testBlog} updateLikes={() => {}} removeBlog={() => {}} />
 	)
 	const div = container.querySelector('.blog')
 
@@ -40,8 +46,8 @@ test('url, likes and user are shown when the view-button has been pressed', asyn
 
 	const mockHandler = jest.fn()
 
-	const { container } = render (
-		<Blog blog={testBlog} updateLikes={mockHandler} removeBlog={() => {}} />
+	const { container } = render(
+		<Blog user={testUser} blog={testBlog} updateLikes={mockHandler} removeBlog={() => {}} />
 	)
 
 	const user = userEvent.setup()
@@ -59,8 +65,8 @@ test('clicking the like button calls event handler once', async () => {
 
 	const mockHandler = jest.fn()
 
-	render (
-		<Blog blog={testBlog} updateLikes={mockHandler} removeBlog={() => {}} />
+	render(
+		<Blog user={testUser} blog={testBlog} updateLikes={mockHandler} removeBlog={() => {}} />
 	)
 
 	const user = userEvent.setup()

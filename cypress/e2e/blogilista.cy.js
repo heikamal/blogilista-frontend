@@ -4,13 +4,20 @@ describe('Blog app', function() {
 		cy.request('POST', 'http://localhost:3003/api/testing/reset')
 
 		// luo testikäyttäjä
-		const user = {
+		const user1 = {
 			name: 'Heikki Malkavaara',
 			username: 'heimal',
 			password: 'salasana1'
 		}
 
-		cy.request('POST', 'http://localhost:3003/api/users/', user)
+		const user2 = {
+			name: 'Testi Testinen',
+			username: 'testes',
+			password: 'salasana2'
+		}
+
+		cy.request('POST', 'http://localhost:3003/api/users/', user1)
+		cy.request('POST', 'http://localhost:3003/api/users/', user2)
 
 		// avaa sivu
 		cy.visit('http://localhost:3000')
@@ -31,7 +38,7 @@ describe('Blog app', function() {
 			// paina painiketta
 			cy.get('#login-button').click()
 			// tarkista tuleeko oikea ilmoitus
-			cy.contains('blogs')
+			cy.contains('Heikki Malkavaara logged in')
 		})
 
 		it('fails with wrong credentials', function() {
@@ -74,6 +81,34 @@ describe('Blog app', function() {
 				cy.contains('view').click()
 				cy.contains('like').click()
 				cy.contains('like added to JavaScript testing: 9 best practices to learn')
+			})
+
+			it('A blog can be removed by the added user', function() {
+				cy.contains('view').click()
+				cy.contains('remove').click()
+				cy.contains('JavaScript testing: 9 best practices to learn removed')
+			})
+
+			it('Remove button only shows to the user that added the blog', function() {
+				// aluksi on blogin lisännyt käyttäjä kirjautunut sisään
+				cy.contains('Heikki Malkavaara logged in')
+
+				// näkee poistopainikkeen
+				cy.contains('view').click()
+				cy.contains('remove')
+
+				// kirjaa käyttäjä ulos
+				cy.contains('logout')
+
+				// kirjaudu sisään toisella käyttäjällä
+				cy.login({ username: 'testes', password: 'salasana2' })
+
+				// tarkista että toinen käyttäjä on kirjautuneena sisään
+				cy.contains('Testi Testinen logged in')
+
+				// tarkista ettei näe poistopainiketta
+				cy.contains('view').click()
+				cy.get('#remove-button').should('not.exist')
 			})
 		})
 	})

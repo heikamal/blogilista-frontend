@@ -2,7 +2,7 @@ import { useState } from 'react'
 import TogglableButton from './TogglableButton'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, updateLikes, removeBlog }) => {
+const Blog = ({ user, blog, updateLikes, removeBlog }) => {
 	const [blogInfoVisible, setBlogInfoVisible] = useState(false)
 	const showWhenVisible = { display: blogInfoVisible ? '' : 'none' }
 
@@ -18,7 +18,7 @@ const Blog = ({ blog, updateLikes, removeBlog }) => {
 					{blog.url}<br/>
 					likes: {blog.likes} <button onClick={updateLikes}>like</button><br/>
 					{blog.user.name}<br/>
-					<button onClick={removeBlog}>remove</button>
+					{user.username === blog.user.username && <button id='remove-button' onClick={removeBlog}>remove</button>}
 				</p>
 			</div>
 
@@ -27,6 +27,7 @@ const Blog = ({ blog, updateLikes, removeBlog }) => {
 }
 
 Blog.propTypes = {
+	user: PropTypes.object.isRequired,
 	blog: PropTypes.object.isRequired,
 	updateLikes: PropTypes.func.isRequired,
 	removeBlog: PropTypes.func.isRequired,

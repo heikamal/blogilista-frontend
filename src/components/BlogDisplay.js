@@ -43,6 +43,7 @@ const BlogDisplay = ({
 		.sort((a, b) => a.likes < b.likes ? 1 : -1)
 		.map((blog) =>
 			<Blog key={blog.id}
+				user={user}
 				blog={blog}
 				updateLikes={() => updateLikes(blog)}
 				removeBlog={() => removeBlog(blog)}
